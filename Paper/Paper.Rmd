@@ -1,0 +1,31 @@
+---
+title: 'A reproduction of Newspapers in Times of Low Advertising Revenues'
+author: "Kar Hian Ong"
+thanks:  "Code and data are available at: https://github.com/karhian/s4-R-5"
+date: "15/12/2020"
+abstract: | 
+  | 
+  | **Keywords:** Newspapers, least squares, Advertising, Internet
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# Introduction 
+
+With the rise of the internet, the purchase of newspaper is in the decline.
+In this paper I attempt to reproduce Newspapers in Times of Low Advertising Revenues by Charles Angelucci and Julia Cagé
+
+# Data 
+
+# Model 
+
+# Discussion 
+
+## Weakness
+
+# References 
+
+
