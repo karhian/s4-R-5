@@ -32,10 +32,26 @@ section 3 will introduce the model, section 4 we will get
 to see the results of our modeling, section 5 will be discussion on the findings and weaknesses.
 
 # Data 
-The replication data is obtain from openicpsr (@citereplication). 
+The replication data is obtain from openicpsr (@citereplication). The author of the paper co
 
+
+```{r}
+newspapers <- read.csv("../Cleaned data/newspaper_clean.csv")
+#remove na's from advertising revenue
+newspapers <- newspapers[!is.na(newspapers$ra_cst),]
+revenue_year <- aggregate(newspapers['ra_cst'], by=newspapers['year'], sum)
+revenue_year %>% ggplot() + geom_point(aes(year,ra_cst)) +labs(x = "Year",
+       y = "Advertising revenue")
+
+
+```
+
+The data shows a general increase in advertising revenue from 1960 to 1974.  
 
 # Model 
+
+
+
 
 # Results
 
