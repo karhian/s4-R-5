@@ -3,24 +3,41 @@ title: 'A reproduction of Newspapers in Times of Low Advertising Revenues'
 author: "Kar Hian Ong"
 thanks:  "Code and data are available at: https://github.com/karhian/s4-R-5"
 date: "15/12/2020"
+bibliography: "references.bib"
 abstract: | 
-  | 
-  | **Keywords:** Newspapers, least squares, Advertising, Internet
-output: pdf_document
+  | In a rapid change industry, the newspaper industry constantly change their ways to apeal to the readers. 
+  | **Keywords:** Newspapers, Odinary least squares, Advertising, Internet
+output:
+  bookdown::pdf_document2:
+    fig_caption: yes
+    includes:  
+      in_header: my_header.tex
+toc: FALSE
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
+I use @citer, @citerstudio, @citetidyverse and @citehaven
+
 # Introduction 
 
-With the rise of the internet, the purchase of newspaper is in the decline.
-In this paper I attempt to reproduce Newspapers in Times of Low Advertising Revenues by Charles Angelucci and Julia Cagé
+With the rise of the internet, the purchase of newspaper is in the decline. This is because not many people is willing to pay for things. With other forms of consuming news such as television and the internet, advertisers are more unwilling to pay newspapers to advertise their content. 1991 is when the internet went live to the world. Internet speed was not great then. At the turn of the century, internet speed went up and peoples prefrence from reading the news from the newspapers or telivision channels to reading the news from the internet. Advertisers have moved their ads online where they can get a bigger reach of people. Even traditional news outlet starts to move online as the way people consume news change. 
+
+In this paper I attempt to reproduce Newspapers in Times of Low Advertising Revenues by Charles Angelucci and Julia Cagé (@citearticle). This paper analyses the relationship between advertising revenue and newspapers' choices regarding the size of their newsroom, the quantity of news to produce and their pricing stratergies.
+
+The remaining section is structured as follows:  section 2 will talk about retrieval and cleaning the data for the replication.
+section 3 will introduce the model, section 4 we will get
+to see the results of our modeling, section 5 will be discussion on the findings and weaknesses.
 
 # Data 
+The replication data is obtain from openicpsr (@citereplication). 
+
 
 # Model 
+
+# Results
 
 # Discussion 
 
