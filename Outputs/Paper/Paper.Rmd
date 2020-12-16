@@ -5,7 +5,7 @@ thanks:  "Code and data are available at: https://github.com/karhian/s4-R-5"
 date: "15/12/2020"
 bibliography: "references.bib"
 abstract: | 
-  | In a rapid change industry, the newspaper industry constantly change their ways to apeal to the readers. 
+  | In a rapid change industry, the newspaper industry constantly change their ways to apeal to the readers. This paper uses observational data to investigate the effects of advertising revenue on french newspapers. This paper has implication for the newspaper industries and how we look into this industries in the future.
   | **Keywords:** Newspapers, Odinary least squares, Advertising, Internet
 output:
   bookdown::pdf_document2:

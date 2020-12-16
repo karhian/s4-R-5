@@ -39,4 +39,5 @@ vignettes/*.pdf
 .Renviron
 
 Data/Angelucci_Cage_AEJMicro_dataset.dta
+Outputs/Cleaned data/*
 
