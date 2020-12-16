@@ -37,3 +37,6 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
+
+Data/Angelucci_Cage_AEJMicro_dataset.dta
+
