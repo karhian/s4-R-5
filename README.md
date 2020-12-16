@@ -4,7 +4,7 @@ This repo contains code and data for an attempt to reproduce Newspapers in Times
 
 
 - Data
-    - Data will cointain the data for this paper but will not be in this repo. There will be a readme in the Data folder.
+    - Data will cointain the data for this paper but will not be in this repo. There will be a readme in the Data folder that gives a step by step guide to download the data.
     
 - Outputs
     - Outputs contain data that are modified from the input data, the report and supporting material. The section are: 
