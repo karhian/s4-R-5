@@ -12,6 +12,7 @@ This repo contains code and data for an attempt to reproduce Newspapers in Times
 
 - Scripts
     - Scripts contain R scripts that take inputs and outputs and produce outputs. These are:
+        - 01-data_cleaning-newspaper.R
     
 
 
