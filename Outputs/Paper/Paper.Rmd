@@ -35,7 +35,7 @@ With the rise of the internet, the purchase of newspaper is in the decline. This
 
 In this paper I attempt to reproduce Newspapers in Times of Low Advertising Revenues by Charles Angelucci and Julia Cagé (@citearticle). This paper analyses the relationship between advertising revenue and newspapers' choices regarding the size of their newsroom, the quantity of news to produce and their pricing strategies. Their argument is based on the introduction of advertising on television which said to be affecting national newspapers than local newspapers. Hence, they perform a difference in difference analysis on the dataset. So, the local newspapers will be the control group while the national newspaper will be the comparison group.
 
-Within this paper I attempt to use methods mention by the author of the paper.  
+Within this paper I attempt to use methods mention by the author of the paper. I look at the statistical significance and make a conclusion on the variable of interest. 
 
 The remaining section is structured as follows:  section 2 will talk about retrieval and cleaning the data for the replication. section 3 will introduce the model, section 4 we will get to see the results of our modeling, section 5 will be discussion on the findings and weaknesses.
 
@@ -188,7 +188,7 @@ omit_me <- c("(Intercept)", "id_news3", "id_news6", "id_news7", "id_news13",
 hx<-huxreg("Subscription price" = subscription_price, 
        "Unit price" = unit_price, 
        "Circulation" = circulation, 
-       "Share of sub" = share_of_sub,
+       "Share of subscribers" = share_of_sub,
        "Revenue from sales" = revenue_from_sales,
        omit_coefs = omit_me, 
        number_format = 2
@@ -200,10 +200,9 @@ set_text_color(2,2:6, "red")
 
 ```
 
-For the red text in table \@ref(tab:tab2), the subscription price, circulation and revenue decreased for national newspapers compared to local newspapers. while unit price and share of sub increased for national newspapers compared to local newspapers.
+For the red text in table \@ref(tab:tab2), the subscription price, circulation and revenue decreased for national newspapers compared to local newspapers. while unit price and share of subscribers increased for national newspapers compared to local newspapers.
 
 Finally we will look at the qualty of newspapers.
-
 
 ```{r tab3}
 newspapers$id_news <- as.factor(newspapers$id_news)
@@ -248,16 +247,27 @@ set_text_color(3,2:6, "red")
 
 ```
 
-
+We get to see that there is a decrease in journalist for national newspapers compared to local newspapers. There seems to be no statistically significant change on the average payroll, number of pages, newshole and share of hard news on front page.
 
 # Discussion 
 
-## Weakness
+## First discussion point
+
+Majority of the outcome of interest show statistical significance with the difference in difference coefficient. This shows that the introduction of television impacts the newspaper industry in particular the national newspaper. Statistical significance is based on the p-value of the coefficient. A low p-value indicates statistically significance where the hypothesis that the coefficient equals to zero is rejected. The greater the number of stars next to the coefficient estimate indicates a stronger statistical significance.
+
+## Second discussion point
+
+After looking at the 3 aspect of the dataset, we get to see the impacts of the introduction of television on the newspaper industry. On the advertising side, advertising revenue showed that it has decreased after the change indicates that advertisers are looking elsewhere to display their advertisement. The number of journalists also decreased, likely indicating the journalist moved elsewhere to work. The average payroll only showed a small statistical significance. This may be due to the lower number of observations for average payroll compared to the number of observations of journalist caused by missing data in the average payroll.
+
+## Weakness and next steps
+
 Since all the data used by the author of the paper is by external sources, the data may be bias to the data collector such as data favoring the data collector especially survey conducted by the CESP. It is stated that the CESP is association composed of main companies active in the advertising industry, so the survey reports may be favouring advertising companies. Since the paper I am reproducing is looking at the effects on advertising on the quality of newspapers there may be bias on the results.
 
 Besides that, I could not find any information about the way CESP handles non-responses. The authors mention that they digitalise the report for the years 1957, 1962, 1967, 1968, 1969, 1970, 1972, 1974 as the paper was in paper format. They did not provide the digital copy in the replication data hence I am unable to get the details further from what is provided in the online appendix. 
 
 The way the author collects the data is not reproducible. They are either non-publicly available records or only available in paper copy. This makes it hard to verify the genuineness of the data.
+
+Due to time and manpower constrain, I am not able to fully reproduce 'Newspapers in Times of Low Advertising Revenues' by Charles Angelucci and Julia Cagé. There is some aspect of the paper such as controlling for parallel trends which I will leave as an opportunity for future work.
 
 # References 
 
