@@ -41,3 +41,6 @@ vignettes/*.pdf
 Data/Angelucci_Cage_AEJMicro_dataset.dta
 Outputs/Cleaned data/*
 
+Outputs/Paper/Paper.aux
+Outputs/Paper/Paper.out
+

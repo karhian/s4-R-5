@@ -2,11 +2,11 @@
 title: 'A reproduction of Newspapers in Times of Low Advertising Revenues'
 author: "Kar Hian Ong"
 thanks:  "Code and data are available at: https://github.com/karhian/s4-R-5"
-date: "15/12/2020"
+date: "22 December 2020"
 bibliography: "references.bib"
 abstract: | 
-  | In a rapid change industry, the newspaper industry constantly change their ways to apeal to the readers. This paper uses observational data to investigate the effects of advertising revenue on french newspapers. This paper has implication for the newspaper industries and how we look into this industries in the future.
-  | **Keywords:** Newspapers, Odinary least squares, Advertising, Internet
+  | In a rapid change industry, the newspaper industry constantly changes their ways to appeal to the readers. This paper uses observational data to investigate the effects of advertising revenue on French newspapers. We found that there is a lot of difference in the targeted variables for national newspapers compared to local newspaper. This paper has implication for the newspaper industries and how we look at this industry in the future.
+  | **Keywords:** Newspapers, Ordinary least squares, Advertising, Journalist, difference in difference
 output:
   bookdown::pdf_document2:
     fig_caption: yes
@@ -19,45 +19,201 @@ toc: FALSE
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-I use @citer, @citerstudio, @citetidyverse and @citehaven
+```{r, message=FALSE, warning=FALSE}
+#library setup 
+library(tidyverse)
+library(scales)
+library(huxtable)
+```
+
+
+I use @citer, @citerstudio, @citetidyverse, @citehaven, @citehux and @citescales to complete this report.
 
 # Introduction 
 
-With the rise of the internet, the purchase of newspaper is in the decline. This is because not many people is willing to pay for things. With other forms of consuming news such as television and the internet, advertisers are more unwilling to pay newspapers to advertise their content. 1991 is when the internet went live to the world. Internet speed was not great then. At the turn of the century, internet speed went up and peoples prefrence from reading the news from the newspapers or telivision channels to reading the news from the internet. Advertisers have moved their ads online where they can get a bigger reach of people. Even traditional news outlet starts to move online as the way people consume news change. 
+With the rise of the internet, the purchase of newspaper is in the decline. This is because not many people are willing to pay for things. With other forms of consuming news such as television and the internet, advertisers are more unwilling to pay newspapers to advertise their content. 1991 is when the internet went live to the world. Internet speed was not great then. At the turn of the century, internet speed went up and people’s preferences from reading the news from the newspapers or television channels to reading the news from the internet. Advertisers have moved their ads online where they can get a bigger reach of people. Even traditional news outlet starts to move online as the way people consume news change. 
 
-In this paper I attempt to reproduce Newspapers in Times of Low Advertising Revenues by Charles Angelucci and Julia Cagé (@citearticle). This paper analyses the relationship between advertising revenue and newspapers' choices regarding the size of their newsroom, the quantity of news to produce and their pricing stratergies.
+In this paper I attempt to reproduce Newspapers in Times of Low Advertising Revenues by Charles Angelucci and Julia Cagé (@citearticle). This paper analyses the relationship between advertising revenue and newspapers' choices regarding the size of their newsroom, the quantity of news to produce and their pricing strategies. Their argument is based on the introduction of advertising on television which said to be affecting national newspapers than local newspapers. Hence, they perform a difference in difference analysis on the dataset. So, the local newspapers will be the control group while the national newspaper will be the comparison group.
 
-The remaining section is structured as follows:  section 2 will talk about retrieval and cleaning the data for the replication.
-section 3 will introduce the model, section 4 we will get
-to see the results of our modeling, section 5 will be discussion on the findings and weaknesses.
+Within this paper I attempt to use methods mention by the author of the paper.  
+
+The remaining section is structured as follows:  section 2 will talk about retrieval and cleaning the data for the replication. section 3 will introduce the model, section 4 we will get to see the results of our modeling, section 5 will be discussion on the findings and weaknesses.
+
+
+\pagebreak
 
 # Data 
-The replication data is obtain from openicpsr (@citereplication). The author of the paper co
 
+The replication data is obtained from openicpsr (@citereplication). I ran through 01-data_cleaning-newspaper script to obtain the cleaned data.
 
-```{r}
+The author of the paper collected data from various sources. On the data on the prices, circulation and revenue, those data are non-publicly available data obtained from the French Ministry of Information. The dataset includes 68 local newspapers and 12 national newspapers circulating between 1960 and 1974.
+
+The number of journalists is obtained from the non-publicly available paper records of the e “Commission
+de la carte d’identité des journalistes professionnels” (CCIJP). The dataset includes information about journalists for 63 out of the 68 local newspaper and information about journalists in 11 out of 12 national newspapers. The number of newspaper journalists is one of the variables used as a proxy for the newspapers' quality. Besides data about newspaper journalist, data about television journalists is also collected from the French television and radio broadcasting agency (ORTF).  The number of television journalist will be used as a variable as proxy for television quality. The data only account for journalist of newspapers and television that holds press card.
+
+The data for advertising prices is the official list price per column inch of advertising space provided by "Tarif Media" an annual publication that provides information regarding advertising space. The author of the paper uses the price for the front-page ads as it is the place where it's frequently observed. Next, to get the quantity of advertising per issue, the data is collected from the paper version of the newspapers available in the French National Library.    
+
+Data about newshole comes from the content data collected by the author. The content is also being separated by hard story news and soft story news.
+
+Lastly, the readership data on the other hand comes from the Centre d’Etude des Supports de Publicité (CESP). It is an association composed of main companies active in the advertising industry. The source of readership data comes from a survey conducted by CESP. The survey methodology for CESP is as follows, according to the online appendix, the target population is French citizens aged 18 or more living in metropolitan France. The sample size is between 250,000 and 300,000 individuals depending on year. The survey's main objective is to collect information about readership habits of French citizens at the time of the survey conducted using a questionnaire.
+
+With the information about how the data is obtained by the author of the paper, I made an attempt to plot the data.
+
+```{r comp-rev-jour, fig.cap= 'Newspaper Advertising Revenues (in euros) and Number of Journalists for french newspapers from 1960 to 1974'}
 newspapers <- read.csv("../Cleaned data/newspaper_clean.csv")
-#remove na's from advertising revenue
-newspapers <- newspapers[!is.na(newspapers$ra_cst),]
-revenue_year <- aggregate(newspapers['ra_cst'], by=newspapers['year'], sum)
-revenue_year %>% ggplot() + geom_point(aes(year,ra_cst)) +labs(x = "Year",
-       y = "Advertising revenue")
+
+
+#remove na's from newspapers for parameter of interest
+newspaperscopy <- newspapers
+newspaperscopy <- newspaperscopy[!is.na(newspaperscopy$ra_cst),]
+newspaperscopy <- newspaperscopy[!is.na(newspaperscopy$nb_journ),]
+
+
+aggregate_data <- aggregate(c(newspaperscopy['nb_journ'],newspaperscopy['ra_cst']), by=newspaperscopy['year'], sum)
+scaleFactor <- max(aggregate_data$ra_cst) / max(aggregate_data$nb_journ)
+
+colors <- c("Advertising revenues" = "blue", "Journalists" = "red")
+
+aggregate_data %>% ggplot() + geom_point(aes(year,ra_cst),shape=18)+ geom_point(aes(year,nb_journ*scaleFactor)) +labs(x = "Year",
+       y = "Advertising revenues (blue)",color = "Legend") + geom_path(aes(year,ra_cst,color = "Advertising revenues")) +
+  geom_path(aes(year,nb_journ*scaleFactor,color = "Journalists")) +
+
+  scale_y_continuous(labels = dollar_format(prefix="€", suffix = "M", scale = 0.000001),                                                                                      sec.axis=sec_axis(~./scaleFactor, name="Number of Journalists (red)")) +
+    scale_color_manual(values = colors) + theme(legend.position = "bottom")
 
 
 ```
 
-The data shows a general increase in advertising revenue from 1960 to 1974.  
+Figure \@ref(fig:comp-rev-jour) is a replication for figure 1 in the paper but I used the French newspaper data instead to do a comparison. It follows a similar trend where increase in advertising revenue increases the number of Journalists.   
+
+
 
 # Model 
 
+The model given by the author is
+\begin{equation}
+y_{n,t} = \alpha + \beta_{1}(D_\text{after} * D_\text{national news}) + \lambda_{n} + \gamma_{t} + \epsilon_{n,t}
+(\#eq:1)
+\end{equation} where $y_{n,t}$ is the outcome of interest, $D_\text{after}$ is a switch where it switches on for observation after 1967, D_\text{national news}) is an indicator variable for national news, $\lambda_{n}$ is the fixed effects for newspaper, $\gamma_{t}$ is the time dummies and $\epsilon_{n,t}$ is  newspaper year shock.
 
+I will use the natural log of the value of the outcome of interest instead while modeling the dataset. This is so that the outcome value will be smaller. The equation is as follows:  
+\begin{equation}
+\ln{(y_{n,t})} = \alpha + \beta_{1}(D_\text{after} * D_\text{national news}) + \lambda_{n} + \gamma_{t} + \epsilon_{n,t}
+(\#eq:2)
+\end{equation}
+
+We want to investigate the different models to look at effects on the advertising side, reader side and the quality of the newspapers based on equation \@ref(eq:2).
+
+
+
+\pagebreak
 
 
 # Results
 
+We start off by analyzing the advertisement side of the newspaper industry in France.
+
+```{r tab1}
+newspapers$id_news <- as.factor(newspapers$id_news)
+ad_revenue <- lm(log(ra_cst) ~ after_national + id_news + year, data = newspapers)
+ad_revenue_div_circulation <- lm(log(ra_cst_div_qtotal) ~ after_national + id_news + year, data = newspapers)
+ad_price <- lm(log(ads_p4_cst) ~ after_national + id_news + year, data = newspapers)
+ad_space <- lm(log(ads_s) ~ after_national + id_news + year, data = newspapers)
+
+
+omit_me <- c("(Intercept)", "id_news3", "id_news6", "id_news7", "id_news13", 
+             "id_news16", "id_news25", "id_news28", "id_news34", "id_news38", 
+             "id_news44", "id_news48", "id_news51", "id_news53", "id_news54", 
+             "id_news57", "id_news60", "id_news62", "id_news66", "id_news67", 
+             "id_news70", "id_news71", "id_news72", "id_news80", "id_news82", 
+             "id_news88", "id_news95", "id_news97", "id_news98", "id_news103", 
+             "id_news105", "id_news106", "id_news118", "id_news119", "id_news127", 
+             "id_news136", "id_news138", "id_news148", "id_news151", "id_news153", 
+             "id_news154", "id_news157", "id_news158", "id_news161", "id_news163", 
+             "id_news167", "id_news169", "id_news179", "id_news184", "id_news185", 
+             "id_news187", "id_news196", "id_news206", "id_news210", "id_news212", 
+             "id_news213", "id_news224", "id_news225", "id_news234", "id_news236", 
+             "id_news245", "id_news247", "id_news310", "id_news452", "id_news467", 
+             "id_news469", "id_news480", "id_news20040", "id_news20345", 
+             "id_news20346", "id_news20347", "id_news20352", "id_news20354", 
+             "id_news21006", "id_news21025", "id_news21173", "id_news21176", 
+             "id_news33718", "id_news34689", "id_news73")
+
+hx<-huxreg("Advertising revenues" = ad_revenue, 
+       "Ad revenues div circulation" = ad_revenue_div_circulation, 
+       "Ad price" = ad_price, 
+       "Ad space" = ad_space,
+        omit_coefs = omit_me, 
+        number_format = 2
+        )
+set_caption(hx,"Advertising Side") %>%
+set_text_color(2,2:5, "red")
+
+
+
+```
+
+We focus on the red text in table \@ref(tab:tab1). We found that there is a decrease in advertising revenue, total advertising revenue normalised by circulation and ad price in national newspaper compared to local newspapers. We have found no statistically significance for advertising space.
+
+
+Next let’s take a look at the reader side of the dataset.
+
+```{r tab2}
+newspapers$id_news <- as.factor(newspapers$id_news)
+subscription_price <- lm(log(ps_cst) ~ after_national + id_news + year, data = newspapers)
+unit_price <- lm(log(po_cst) ~ after_national + id_news + year, data = newspapers)
+circulation <- lm(log(qtotal) ~ after_national + id_news + year, data = newspapers)
+share_of_sub <- lm(log(qs_s) ~ after_national + id_news + year, data = newspapers)
+revenue_from_sales <- lm(log(rs_cst) ~ after_national + id_news + year, data = newspapers)
+
+
+omit_me <- c("(Intercept)", "id_news3", "id_news6", "id_news7", "id_news13", 
+             "id_news16", "id_news25", "id_news28", "id_news34", "id_news38", 
+             "id_news44", "id_news48", "id_news51", "id_news53", "id_news54", 
+             "id_news57", "id_news60", "id_news62", "id_news66", "id_news67", 
+             "id_news70", "id_news71", "id_news72", "id_news80", "id_news82", 
+             "id_news88", "id_news95", "id_news97", "id_news98", "id_news103", 
+             "id_news105", "id_news106", "id_news118", "id_news119", "id_news127", 
+             "id_news136", "id_news138", "id_news148", "id_news151", "id_news153", 
+             "id_news154", "id_news157", "id_news158", "id_news161", "id_news163", 
+             "id_news167", "id_news169", "id_news179", "id_news184", "id_news185", 
+             "id_news187", "id_news196", "id_news206", "id_news210", "id_news212", 
+             "id_news213", "id_news224", "id_news225", "id_news234", "id_news236", 
+             "id_news245", "id_news247", "id_news310", "id_news452", "id_news467", 
+             "id_news469", "id_news480", "id_news20040", "id_news20345", 
+             "id_news20346", "id_news20347", "id_news20352", "id_news20354", 
+             "id_news21006", "id_news21025", "id_news21173", "id_news21176", 
+             "id_news33718", "id_news34689", "id_news73")
+
+hx<-huxreg("Subscription price" = subscription_price, 
+       "Unit price" = unit_price, 
+       "Circulation" = circulation, 
+       "Share of sub" = share_of_sub,
+       "Revenue from sales" = revenue_from_sales,
+       omit_coefs = omit_me, 
+       number_format = 2
+       )
+set_caption(hx,"Reader side") %>%
+set_text_color(2,2:6, "red")
+
+
+
+```
+
+For the red text in table \@ref(tab:tab2), the subscription price, circulation and revenue decreased for national newspapers compared to local newspapers. while unit price and share of sub increased for national newspapers compared to local newspapers.
+
+Finally we will look at the qualty of newspapers.
+
+
+
 # Discussion 
 
 ## Weakness
+Since all the data used by the author of the paper is by external sources, the data may be bias to the data collector such as data favoring the data collector especially survey conducted by the CESP. It is stated that the CESP is association composed of main companies active in the advertising industry, so the survey reports may be favouring advertising companies. Since the paper I am reproducing is looking at the effects on advertising on the quality of newspapers there may be bias on the results.
+
+Besides that, I could not find any information about the way CESP handles non-responses. The authors mention that they digitalise the report for the years 1957, 1962, 1967, 1968, 1969, 1970, 1972, 1974 as the paper was in paper format. They did not provide the digital copy in the replication data hence I am unable to get the details further from what is provided in the online appendix. 
+
+The way the author collects the data is not reproducible. They are either non-publicly available records or only available in paper copy. This makes it hard to verify the genuineness of the data.
 
 # References 
 
