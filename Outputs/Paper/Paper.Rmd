@@ -96,13 +96,13 @@ y_{n,t} = \alpha + \beta_{1}(D_\text{after} * D_\text{national news}) + \lambda_
 (\#eq:1)
 \end{equation} where $y_{n,t}$ is the outcome of interest, $D_\text{after}$ is a switch where it switches on for observation after 1967, D_\text{national news}) is an indicator variable for national news, $\lambda_{n}$ is the fixed effects for newspaper, $\gamma_{t}$ is the time dummies and $\epsilon_{n,t}$ is  newspaper year shock.
 
-I will use the natural log of the value of the outcome of interest instead while modeling the dataset. This is so that the outcome value will be smaller. The equation is as follows:  
+I will use the natural log of the value of the outcome of interest instead while modeling the dataset. This is so that the outcome value will be smaller. This will make equation \@ref(eq:1) similar to equation \@ref(eq:2) with the y value scaled by natural log. The equation is as follows:  
 \begin{equation}
 \ln{(y_{n,t})} = \alpha + \beta_{1}(D_\text{after} * D_\text{national news}) + \lambda_{n} + \gamma_{t} + \epsilon_{n,t}
 (\#eq:2)
 \end{equation}
 
-We want to investigate the different models to look at effects on the advertising side, reader side and the quality of the newspapers based on equation \@ref(eq:2).
+We want to investigate the different models to look at effects on the advertising side, reader side and the quality of the newspapers based on equation \@ref(eq:2). $\beta_{1}$ is the difference in difference value which we are interested in.
 
 
 
@@ -203,6 +203,50 @@ set_text_color(2,2:6, "red")
 For the red text in table \@ref(tab:tab2), the subscription price, circulation and revenue decreased for national newspapers compared to local newspapers. while unit price and share of sub increased for national newspapers compared to local newspapers.
 
 Finally we will look at the qualty of newspapers.
+
+
+```{r tab3}
+newspapers$id_news <- as.factor(newspapers$id_news)
+journalists <- lm(log(nb_journ) ~ after_national + id_news + year, data = newspapers)
+ave_payroll <- lm(ln_av_payroll_cst ~ after_national + id_news + year, data = newspapers)
+pages <- lm(ln_pages ~ after_national + id_news + year, data = newspapers)
+news_hole <- lm(ln_news_hole ~ after_national + id_news + year, data = newspapers)
+share_hard_news <- lm(share_Hard ~ after_national + id_news + year, data = newspapers)
+
+
+omit_me <- c("(Intercept)", "id_news3", "id_news6", "id_news7", "id_news13", 
+             "id_news16", "id_news25", "id_news28", "id_news34", "id_news38", 
+             "id_news44", "id_news48", "id_news51", "id_news53", "id_news54", 
+             "id_news57", "id_news60", "id_news62", "id_news66", "id_news67", 
+             "id_news70", "id_news71", "id_news72", "id_news80", "id_news82", 
+             "id_news88", "id_news95", "id_news97", "id_news98", "id_news103", 
+             "id_news105", "id_news106", "id_news118", "id_news119", "id_news127", 
+             "id_news136", "id_news138", "id_news148", "id_news151", "id_news153", 
+             "id_news154", "id_news157", "id_news158", "id_news161", "id_news163", 
+             "id_news167", "id_news169", "id_news179", "id_news184", "id_news185", 
+             "id_news187", "id_news196", "id_news206", "id_news210", "id_news212", 
+             "id_news213", "id_news224", "id_news225", "id_news234", "id_news236", 
+             "id_news245", "id_news247", "id_news310", "id_news452", "id_news467", 
+             "id_news469", "id_news480", "id_news20040", "id_news20345", 
+             "id_news20346", "id_news20347", "id_news20352", "id_news20354", 
+             "id_news21006", "id_news21025", "id_news21173", "id_news21176", 
+             "id_news33718", "id_news34689", "id_news73")
+
+hx<-huxreg("journalists" = journalists, 
+       "payroll" = ave_payroll, 
+       "of pages" = pages, 
+       "Newshole" = news_hole,
+       "on front page (percent)" = share_hard_news,
+       omit_coefs = omit_me, 
+       number_format = 2
+       )
+insert_row(hx,c("","Number of","Average","Number","","Share of hard news"),after=0) %>%
+set_caption("Quality") %>%
+set_text_color(3,2:6, "red")
+
+
+
+```
 
 
 
