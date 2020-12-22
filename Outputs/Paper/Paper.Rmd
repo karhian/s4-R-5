@@ -5,8 +5,8 @@ thanks:  "Code and data are available at: https://github.com/karhian/s4-R-5"
 date: "22 December 2020"
 bibliography: "references.bib"
 abstract: | 
-  | In a rapid change industry, the newspaper industry constantly changes their ways to appeal to the readers. This paper uses observational data to investigate the effects of advertising revenue on French newspapers. We found that there is a lot of difference in the targeted variables for national newspapers compared to local newspaper. This paper has implication for the newspaper industries and how we look at this industry in the future.
-  | **Keywords:** Newspapers, Ordinary least squares, Advertising, Journalist, difference in difference
+  | In a rapidly changing industry, the newspaper industry is constantly changing the way they present content to the readers. This paper uses observational data to investigate the effects of advertising revenue on French newspapers. We found that there is a lot of difference in the targeted variables for national newspapers compared to local newspaper. This paper has implication for the newspaper industries and how we look at this industry in the future.
+  | **Keywords:** Newspapers, Ordinary least squares, Advertising, Journalist, Difference in differences
 output:
   bookdown::pdf_document2:
     fig_caption: yes
@@ -31,33 +31,30 @@ I use @citer, @citerstudio, @citetidyverse, @citehaven, @citehux and @citescales
 
 # Introduction 
 
-With the rise of the internet, the purchase of newspaper is in the decline. This is because not many people are willing to pay for things. With other forms of consuming news such as television and the internet, advertisers are more unwilling to pay newspapers to advertise their content. 1991 is when the internet went live to the world. Internet speed was not great then. At the turn of the century, internet speed went up and people’s preferences from reading the news from the newspapers or television channels to reading the news from the internet. Advertisers have moved their ads online where they can get a bigger reach of people. Even traditional news outlet starts to move online as the way people consume news change. 
+With the rise of the internet, the purchase of newspaper is in the decline. This is because not many people are willing to pay for things. With other forms of consuming news such as television and the internet, advertisers are more unwilling to pay newspapers to advertise their content. 1991 is when the internet went live to the world. Internet speed was not great then. At the turn of the century, internet speed went up and people’s preferences from reading the news from the newspapers or television channels changed to reading the news from the internet. Advertisers have moved their ads online where they can get a bigger reach of people. Even traditional news outlet starts to move online as the way people consume news change. 
 
-In this paper I attempt to reproduce Newspapers in Times of Low Advertising Revenues by Charles Angelucci and Julia Cagé (@citearticle). This paper analyses the relationship between advertising revenue and newspapers' choices regarding the size of their newsroom, the quantity of news to produce and their pricing strategies. Their argument is based on the introduction of advertising on television which said to be affecting national newspapers than local newspapers. Hence, they perform a difference in difference analysis on the dataset. So, the local newspapers will be the control group while the national newspaper will be the comparison group.
+In this paper I attempt to reproduce 'Newspapers in Times of Low Advertising Revenues' by Charles Angelucci and Julia Cagé (@citearticle). This paper analyses the relationship between advertising revenue and newspapers' choices regarding the size of their newsroom, the quantity of news to produce and their pricing strategies. Their argument is based on the introduction of advertising on television which said to be affecting national newspapers than local newspapers. Hence, they perform a difference in differences analysis on the dataset. So, the local newspapers will be the control group while the national newspaper will be the comparison group.
 
-Within this paper I attempt to use methods mention by the author of the paper. I look at the statistical significance and make a conclusion on the variable of interest. 
+Within this paper I attempt to use methods mention by the authors of the paper. I look at the statistical significance and make a conclusion on the variable of interest. 
 
-The remaining section is structured as follows:  section 2 will talk about retrieval and cleaning the data for the replication. section 3 will introduce the model, section 4 we will get to see the results of our modeling, section 5 will be discussion on the findings and weaknesses.
+The remaining section is structured as follows: section 2 will talk about retrieval and cleaning the data to reproduce the paper. section 3 will introduce the model, section 4 we will get to see the results of our modeling, section 5 will be discussion on the findings and weaknesses.
 
-
-\pagebreak
 
 # Data 
 
 The replication data is obtained from openicpsr (@citereplication). I ran through 01-data_cleaning-newspaper script to obtain the cleaned data.
 
-The author of the paper collected data from various sources. On the data on the prices, circulation and revenue, those data are non-publicly available data obtained from the French Ministry of Information. The dataset includes 68 local newspapers and 12 national newspapers circulating between 1960 and 1974.
+The authors of the paper collected data from various sources. On the data on the prices, circulation and revenue, those data are non-publicly available data obtained from the French Ministry of Information. The dataset includes 68 local newspapers and 12 national newspapers circulating between 1960 and 1974.
 
-The number of journalists is obtained from the non-publicly available paper records of the e “Commission
-de la carte d’identité des journalistes professionnels” (CCIJP). The dataset includes information about journalists for 63 out of the 68 local newspaper and information about journalists in 11 out of 12 national newspapers. The number of newspaper journalists is one of the variables used as a proxy for the newspapers' quality. Besides data about newspaper journalist, data about television journalists is also collected from the French television and radio broadcasting agency (ORTF).  The number of television journalist will be used as a variable as proxy for television quality. The data only account for journalist of newspapers and television that holds press card.
+The number of journalists is obtained from the non-publicly available paper records of the “Commission de la carte d’identité des journalistes professionnels” (CCIJP). The dataset includes information about journalists for 63 out of the 68 local newspaper and information about journalists in 11 out of 12 national newspapers. The number of newspaper journalists is one of the variables used as a proxy for the newspapers' quality. Besides data about newspaper journalist, data about television journalists is also collected from the French television and radio broadcasting agency (ORTF).  The number of television journalist will be used as a variable as proxy for television quality. The data only account for journalist of newspapers and television that holds press card.
 
-The data for advertising prices is the official list price per column inch of advertising space provided by "Tarif Media" an annual publication that provides information regarding advertising space. The author of the paper uses the price for the front-page ads as it is the place where it's frequently observed. Next, to get the quantity of advertising per issue, the data is collected from the paper version of the newspapers available in the French National Library.    
+The data for advertising prices is the official list price per column inch of advertising space provided by "Tarif Media" an annual publication that provides information regarding advertising space. The authors of the paper use the price for the front-page ads as a reference price as front-pages is the place where the ads are frequently observed. Next, to get the quantity of advertising per issue, the data is collected from the paper version of the newspapers available in the French National Library.    
 
-Data about newshole comes from the content data collected by the author. The content is also being separated by hard story news and soft story news.
+Data about newshole comes from the content data collected by the authors. Newshole is the amount of space dedicated to news. The content is also being separated by hard story news and soft story news.
 
-Lastly, the readership data on the other hand comes from the Centre d’Etude des Supports de Publicité (CESP). It is an association composed of main companies active in the advertising industry. The source of readership data comes from a survey conducted by CESP. The survey methodology for CESP is as follows, according to the online appendix, the target population is French citizens aged 18 or more living in metropolitan France. The sample size is between 250,000 and 300,000 individuals depending on year. The survey's main objective is to collect information about readership habits of French citizens at the time of the survey conducted using a questionnaire.
+Lastly, the readership data on the other hand comes from the "Centre d’Etude des Supports de Publicité" (CESP). It is an association composed of main companies active in the advertising industry. The source of readership data comes from a survey conducted by CESP. The survey methodology for CESP is as follows, according to the online appendix, the target population is French citizens aged 18 or more living in metropolitan France. The sample size is between 250,000 and 300,000 individuals depending on year. The survey's main objective is to collect information about readership habits of French citizens at the time of the survey conducted using a questionnaire.
 
-With the information about how the data is obtained by the author of the paper, I made an attempt to plot the data.
+With the information about how the data is obtained by the authors of the paper, I made an attempt to plot the data.
 
 ```{r comp-rev-jour, fig.cap= 'Newspaper Advertising Revenues (in euros) and Number of Journalists for french newspapers from 1960 to 1974'}
 newspapers <- read.csv("../Cleaned data/newspaper_clean.csv")
@@ -87,14 +84,13 @@ aggregate_data %>% ggplot() + geom_point(aes(year,ra_cst),shape=18)+ geom_point(
 Figure \@ref(fig:comp-rev-jour) is a replication for figure 1 in the paper but I used the French newspaper data instead to do a comparison. It follows a similar trend where increase in advertising revenue increases the number of Journalists.   
 
 
-
 # Model 
 
-The model given by the author is
+The model given by the authors is
 \begin{equation}
 y_{n,t} = \alpha + \beta_{1}(D_\text{after} * D_\text{national news}) + \lambda_{n} + \gamma_{t} + \epsilon_{n,t}
 (\#eq:1)
-\end{equation} where $y_{n,t}$ is the outcome of interest, $D_\text{after}$ is a switch where it switches on for observation after 1967, D_\text{national news}) is an indicator variable for national news, $\lambda_{n}$ is the fixed effects for newspaper, $\gamma_{t}$ is the time dummies and $\epsilon_{n,t}$ is  newspaper year shock.
+\end{equation} where $y_{n,t}$ is the outcome of interest, $D_\text{after}$ is a switch where it switches on for observation after 1967, $D_{\text{national news}}$ is an indicator variable for national news, $\lambda_{n}$ is the fixed effects for newspaper, $\gamma_{t}$ is the time dummies and $\epsilon_{n,t}$ is  newspaper year shock.
 
 I will use the natural log of the value of the outcome of interest instead while modeling the dataset. This is so that the outcome value will be smaller. This will make equation \@ref(eq:1) similar to equation \@ref(eq:2) with the y value scaled by natural log. The equation is as follows:  
 \begin{equation}
@@ -102,8 +98,7 @@ I will use the natural log of the value of the outcome of interest instead while
 (\#eq:2)
 \end{equation}
 
-We want to investigate the different models to look at effects on the advertising side, reader side and the quality of the newspapers based on equation \@ref(eq:2). $\beta_{1}$ is the difference in difference value which we are interested in.
-
+We want to investigate the different models to look at effects on the advertising side, reader side and the quality of the newspapers based on equation \@ref(eq:2). $\beta_{1}$ is the difference in differences value which we are interested in.
 
 
 \pagebreak
@@ -247,25 +242,25 @@ set_text_color(3,2:6, "red")
 
 ```
 
-We get to see that there is a decrease in journalist for national newspapers compared to local newspapers. There seems to be no statistically significant change on the average payroll, number of pages, newshole and share of hard news on front page.
+In table \@ref(tab:tab3), from the red text we get to see that there is a decrease in journalist for national newspapers compared to local newspapers. There seems to be no statistically significant change on the average payroll, number of pages, newshole and share of hard news on front page.
 
 # Discussion 
 
 ## First discussion point
 
-Majority of the outcome of interest show statistical significance with the difference in difference coefficient. This shows that the introduction of television impacts the newspaper industry in particular the national newspaper. Statistical significance is based on the p-value of the coefficient. A low p-value indicates statistically significance where the hypothesis that the coefficient equals to zero is rejected. The greater the number of stars next to the coefficient estimate indicates a stronger statistical significance.
+Majority of the outcome of interest show statistical significance with the difference in differences coefficient. This shows that the introduction of television impacts the newspaper industry in particular the national newspaper. Statistical significance is based on the p-value of the coefficient. A low p-value indicates statistically significance where the hypothesis that the coefficient equals to zero is rejected. The greater the number of stars next to the coefficient estimate indicates a stronger statistical significance.
 
 ## Second discussion point
 
-After looking at the 3 aspect of the dataset, we get to see the impacts of the introduction of television on the newspaper industry. On the advertising side, advertising revenue showed that it has decreased after the change indicates that advertisers are looking elsewhere to display their advertisement. The number of journalists also decreased, likely indicating the journalist moved elsewhere to work. The average payroll only showed a small statistical significance. This may be due to the lower number of observations for average payroll compared to the number of observations of journalist caused by missing data in the average payroll.
+After looking at the 3 aspect of the dataset, we get to see the impacts of the introduction of television on the newspaper industry. On the advertising side, advertising revenue showed that it has decreased after the change indicates that advertisers are looking elsewhere to display their advertisement. The number of journalists also decreased, likely indicating the journalist moved elsewhere to work. The average payroll only showed a small statistical significance. This may be due to the lower number of observations for average payroll compared to the number of observations of journalist caused by missing data in the average payroll. 
 
 ## Weakness and next steps
 
-Since all the data used by the author of the paper is by external sources, the data may be bias to the data collector such as data favoring the data collector especially survey conducted by the CESP. It is stated that the CESP is association composed of main companies active in the advertising industry, so the survey reports may be favouring advertising companies. Since the paper I am reproducing is looking at the effects on advertising on the quality of newspapers there may be bias on the results.
+Since all the data used by the authors of the paper is by external sources, the data may be bias to the data collector such as data favoring the data collector especially survey conducted by the CESP. Since the CESP is an association composed of main companies active in the advertising industry, the survey reports produced by them may be favouring the advertising companies. Since the paper I am reproducing is looking at the effects on advertising on the quality of newspapers there may be bias on the results. 
 
 Besides that, I could not find any information about the way CESP handles non-responses. The authors mention that they digitalise the report for the years 1957, 1962, 1967, 1968, 1969, 1970, 1972, 1974 as the paper was in paper format. They did not provide the digital copy in the replication data hence I am unable to get the details further from what is provided in the online appendix. 
 
-The way the author collects the data is not reproducible. They are either non-publicly available records or only available in paper copy. This makes it hard to verify the genuineness of the data.
+The way the authors collects the data is not reproducible. They are either non-publicly available records or only available in paper copy. This makes it hard to verify the genuineness of the data.
 
 Due to time and manpower constrain, I am not able to fully reproduce 'Newspapers in Times of Low Advertising Revenues' by Charles Angelucci and Julia Cagé. There is some aspect of the paper such as controlling for parallel trends which I will leave as an opportunity for future work.
 
